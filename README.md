@@ -2,7 +2,7 @@
 
 Hide a list of cards behind a dropdown.
 
-![Example](https://user-images.githubusercontent.com/16443111/80155963-779f3800-85cb-11ea-9565-c360eb9dffb1.png)
+https://user-images.githubusercontent.com/3329319/117338763-db269b80-ae96-11eb-8b1a-36e96d3b3d67.mov
 
 Big thanks to [ofekashery, the author of vertical-stack-in-card](https://github.com/ofekashery/vertical-stack-in-card), whose code I copied to make this card.
 
@@ -10,12 +10,11 @@ Big thanks to [ofekashery, the author of vertical-stack-in-card](https://github.
 
 | Name       | Type    | Default      | Description                               |
 | ---------- | ------- | ------------ | ----------------------------------------- |
-| type       | string  | **Required** | `custom:collapsable-cards`           |
-| cards      | list    | **Required** | List of cards                         |
+| type       | string  |  | `custom:collapsable-cards`           |
+| cards      | list    |  | List of cards                         |
 | defaultOpen | boolean | false | Whether the cards should be visible by default|
 | title      | string  | "Toggle" | Dropdown title                       |
-| horizontal | boolean | **Optional** | Default: `false`                     |
-| buttonStyle| string  | **Optional** | CSS overrides for the dropdown toggle button |
+| buttonStyle| string  | "" | CSS overrides for the dropdown toggle button |
 
 ## Installation
 
