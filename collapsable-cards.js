@@ -203,5 +203,5 @@ window.customCards.push({
   type: "collapsable-cards",
   name: "Collapsable Card",
   preview: false,
-  description: "The Collapsable Card1 allows you to hide other cards behind a dropdown toggle."
+  description: "The Collapsable Card allows you to hide other cards behind a dropdown toggle."
 });
