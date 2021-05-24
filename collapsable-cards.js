@@ -159,7 +159,7 @@ class VerticalStackInCard extends HTMLElement {
   getStyles() {
     return `
       .toggle-button-${this.id} {
-        color: white;
+        color: var(--primary-text-color);
         text-align: left;
         background: none;
         border: none;
