@@ -18,6 +18,15 @@ Big thanks to [ofekashery, the author of vertical-stack-in-card](https://github.
 
 ## Installation
 
+# HACS
+
+Add this repository via HACS Custom repositories 
+
+https://github.com/RossMcMillan92/lovelace-collapsable-cards
+
+([How to add Custom Repositories](https://hacs.xyz/docs/faq/custom_repositories/))
+ 
+# Manually
 [In-depth tutorial here](https://github.com/thomasloven/hass-config/wiki/Lovelace-Plugins), otherwise follow these steps:
 
 1. Install the `collapsable-cards` card by copying `collapsable-cards.js` to `<config directory>/www/collapsable-cards.js`
