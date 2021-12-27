@@ -177,11 +177,15 @@ class VerticalStackInCard extends HTMLElement {
       }
 
       .card-list-${this.id} {
-        display: none;
+        position: absolute;
+        top: -1000000px;
+        left: -1000000px;
       }
 
       .card-list-${this.id}.is-toggled {
-        display: block;
+        position: relative;
+        top: 0;
+        left: 0;
       }
 
       .toggle-button__icon-${this.id} {
