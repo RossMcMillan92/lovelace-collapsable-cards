@@ -177,11 +177,29 @@ class VerticalStackInCard extends HTMLElement {
       }
 
       .card-list-${this.id} {
-        display: none;
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        border: 0;
+        white-space: nowrap;
       }
 
       .card-list-${this.id}.is-toggled {
-        display: block;
+        position: unset;
+        width: unset;
+        height: unset;
+        margin: unset;
+        padding: unset;
+        overflow: unset;
+        clip: unset;
+        clip-path: unset;
+        border: unset;
+        white-space: unset;
       }
 
       .toggle-button__icon-${this.id} {
