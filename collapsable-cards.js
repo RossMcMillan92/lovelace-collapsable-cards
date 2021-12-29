@@ -17,7 +17,7 @@ class VerticalStackInCard extends HTMLElement {
 	let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
 	if (config.defaultOpen == true) {
 	  this.isToggled = true;
-	} else if (config.defaultOpen == 'mobile' && !isMobile) {
+	} else if (config.defaultOpen == 'desktop-only' && !isMobile) {
 	  this.isToggled = true;
 	} else {
 	  this.isToggled = false;
