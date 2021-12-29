@@ -13,7 +13,16 @@ class VerticalStackInCard extends HTMLElement {
     if (!config || !config.cards || !Array.isArray(config.cards)) {
       throw new Error('Supply the `cards` property');
     }
-    this.isToggled = config.defaultOpen || false
+
+	let isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
+	if (config.defaultOpen == true) {
+	  this.isToggled = true;
+	} else if (config.defaultOpen == 'mobile' && !isMobile) {
+	  this.isToggled = true;
+	} else {
+	  this.isToggled = false;
+	}
+
     this._config = config;
     this._refCards = [];
     this.renderCard();

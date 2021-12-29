@@ -12,7 +12,7 @@ Big thanks to [ofekashery, the author of vertical-stack-in-card](https://github.
 | ---------- | ------- | ------------ | ----------------------------------------- |
 | type       | string  |  | `custom:collapsable-cards`           |
 | cards      | list    |  | List of cards                         |
-| defaultOpen | boolean | false | Whether the cards should be visible by default|
+| defaultOpen | string | false | Whether the cards should be visible by default. Can also be set to `mobile` to be collapsed by default on mobile only |
 | title      | string  | "Toggle" | Dropdown title                       |
 | buttonStyle| string  | "" | CSS overrides for the dropdown toggle button |
 
