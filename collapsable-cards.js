@@ -64,7 +64,7 @@ class VerticalStackInCard extends HTMLElement {
     styleTag.innerHTML = this.getStyles()
     card.appendChild(styleTag);
 
-    if (config.defaultOpen === 'contain-toggled' && config.cards.filter((c) => this.checkActiveCard(c)) {
+    if (config.defaultOpen === 'contain-toggled' && config.cards.filter((c) => this.checkActiveCard(c))) {
       toggleButton.click();
     }
   }
