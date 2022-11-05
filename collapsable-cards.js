@@ -66,7 +66,7 @@ class VerticalStackInCard extends HTMLElement {
 
     if (
       config.defaultOpen === 'contain-toggled' && 
-      config.cards.filter((c) => this._hass.states[c.entity]?.state === "on")
+      config.cards.filter((c) => this._hass.states[c.entity]?.state !== "off")
         .length > 0
     ) {
       toggleButton.click();
