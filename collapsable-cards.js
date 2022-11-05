@@ -64,7 +64,7 @@ class VerticalStackInCard extends HTMLElement {
     styleTag.innerHTML = this.getStyles()
     card.appendChild(styleTag);
 
-    if (config.defaultOpen === 'contain-toggled' && config.cards.filter((c) => this.checkActiveCard(c))) {
+    if (config.defaultOpen === 'contain-toggled' && config.cards.filter((c) => this.checkActiveCard(c)).lenght > 0) {
       toggleButton.click();
     }
   }
@@ -72,7 +72,7 @@ class VerticalStackInCard extends HTMLElement {
   checkActiveCard(card) {
 	  const containers = ["grid", "vertical-stack", "horizontal-stack"];
 	  return containers.includes(card.type)
-		  ? card.cards.filter((c) => this.checkActiveCard(c)).length > 0
+		  ? card.cards.filter((c) => this.checkActiveCard(c)).lenght > 0
 	          : this._hass.states[card.entity]?.state !== "off"
   }
 
