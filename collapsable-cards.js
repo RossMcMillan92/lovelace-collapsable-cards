@@ -72,8 +72,8 @@ class VerticalStackInCard extends HTMLElement {
   checkActiveCard(card) {
 	  const containers = ["grid", "vertical-stack", "horizontal-stack"];
 	  return containers.includes(card.type)
-		  ? this.checkActiveCard(card)
-	          : card.cards.filter((c) => this._hass.states[c.entity]?.state !== "off").length > 0
+		  ? card.cards.filter((c) => this.checkActiveCard(c)).length > 0
+	          : this._hass.states[card.entity]?.state !== "off"
   }
 
   createToggleButton() {
