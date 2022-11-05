@@ -70,8 +70,8 @@ class VerticalStackInCard extends HTMLElement {
   }
 	
   checkActiveCard(card) {
-	  var containers = new Array("grid", "vertical-stack", "horizontal-stack");
-	  return containers.indexOf(card.type) != -1
+	  const containers = ["grid", "vertical-stack", "horizontal-stack"];
+	  return containers.includes(card.type)
 		  ? this.checkActiveCard(card)
 	          : card.cards.filter((c) => this._hass.states[c.entity]?.state !== "off").length > 0
   }
