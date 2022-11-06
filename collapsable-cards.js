@@ -1,9 +1,26 @@
 console.log(`%ccollapsable-cards\n%cVersion: ${'0.0.1'}`, 'color: rebeccapurple; font-weight: bold;', '');
+const LitElement = Object.getPrototypeOf(customElements.get("ha-panel-lovelace"));
 
-class VerticalStackInCard extends HTMLElement {
+class VerticalStackInCard extends LitElement {
   constructor() {
     super();
     this.containers = ["custom:collapsable-cards", "grid", "vertical-stack", "horizontal-stack"];
+  }
+	
+  shouldUpdate(changedProps) {
+    if (changedProps.has("_config")) return true;
+    const oldHass = changedProps.get("hass");
+
+    if (oldHass) {      
+      const entListNames = this.getEntitiesNames(this._config)
+      const oldStates = entListNames.map(x => { return oldHass.states[x]; });
+      const actualStates = entListNames.map( x => { return this.hass.states[x] });
+
+      // check when states were changed or not
+      return oldStates !== actualStates;
+    }
+    
+    return true;
   }
 
   setConfig(config) {
@@ -66,28 +83,27 @@ class VerticalStackInCard extends HTMLElement {
     card.appendChild(styleTag);
 
     if (config.defaultOpen === 'contain-toggled') {
-      this.registerListeners(config);
       this.toggle(this.isCardActive(config));
     }
   }
 	
-  registerListeners(card) {
-	  this.containers.includes(card.type)
-		  ? card.cards.forEach((c) => this.registerListeners(c))
-	          : new Proxy(this._hass.states[card.entity], {
-                      set: function (target, key, value) {
-	                if (key !== "state") return true;
-			// if any state change from "off" then open, else check if should close
-	                value !== "off" ? this.toggle(true) : this.toggle(this.isCardActive(this._config));
-	                return true;
-                      }
-	           });
+  getEntitiesNames(card) {
+    if (!this.containers.includes(card.type)) {
+		  if (card.hasOwnProperty('entity')) {
+			  return [card.entity];
+			}
+			if (card.hasOwnProperty('entities')) {
+			  return card.entites;
+			}
+		}
+
+		let list = [];
+		list.join(card.cards.map((c) => this.getEntitiesNames(c)));
+		return list;
   }
 	
   isCardActive(card) {
-	  return this.containers.includes(card.type)
-		  ? card.cards.filter((c) => this.isCardActive(c)).length > 0
-	          : this._hass.states[card.entity]?.state !== "off";
+	  return this.getEntitiesNames(card).filter((e) => this._hass.states[card.entity]?.state !== "off").length > 0;
   }
 
   toggle(open = null) {
