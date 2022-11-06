@@ -3,6 +3,7 @@ console.log(`%ccollapsable-cards\n%cVersion: ${'0.0.1'}`, 'color: rebeccapurple;
 class VerticalStackInCard extends HTMLElement {
   constructor() {
     super();
+    this.containers = ["custom:collapsable-cards", "grid", "vertical-stack", "horizontal-stack"];
   }
 
   setConfig(config) {
@@ -64,26 +65,41 @@ class VerticalStackInCard extends HTMLElement {
     styleTag.innerHTML = this.getStyles()
     card.appendChild(styleTag);
 
-    if (config.defaultOpen === 'contain-toggled' && config.cards.filter((c) => this.checkActiveCard(c)).length > 0) {
-      toggleButton.click();
+    if (config.defaultOpen === 'contain-toggled') {
+      this.registerListeners(card);
+      this.toggle(this.isCardActive(config));
     }
   }
 	
-  checkActiveCard(card) {
-	  const containers = ["grid", "vertical-stack", "horizontal-stack"];
-	  return containers.includes(card.type)
+  registerListeners(card) {
+	  this.containers.includes(card.type)
+		  ? card.cards.filter((c) => this.registerListeners(c))
+	          : new Proxy(this._hass.states[card.entity], {
+                      set: function (target, key, value) {
+	                if (key !== "state") return true;
+			// if any state change from "off" then open, else check if should close
+	                value !== "off" ? this.toggle(true) : this.toggle(this.isCardActive(this._config));
+	                return true;
+                      }
+	           }
+  }
+	
+  isCardActive(card) {
+	  return this.containers.includes(card.type)
 		  ? card.cards.filter((c) => this.checkActiveCard(c)).length > 0
-	          : this._hass.states[card.entity]?.state !== "off"
+	          : this._hass.states[card.entity]?.state !== "off";
+  }
+
+  toggle(open = null) {
+    this.isToggled = open === null ? !this.isToggled : open;
+    this.styleCard(this.isToggled);
   }
 
   createToggleButton() {
     const toggleButton = document.createElement('button');
     toggleButton.innerHTML = this._config.title || 'Toggle'
     toggleButton.className = 'card-content toggle-button-' + this.id
-    toggleButton.addEventListener('click', () => {
-      this.isToggled = !this.isToggled
-      this.styleCard(this.isToggled)
-    })
+    toggleButton.addEventListener('click', () => this.toggle());
 
     const icon = document.createElement('ha-icon');
     icon.className = 'toggle-button__icon-' + this.id
