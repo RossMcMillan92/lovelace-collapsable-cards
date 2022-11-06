@@ -43,10 +43,10 @@ class VerticalStackInCard extends LitElement {
 
     this._config = config;
     this._refCards = [];
-    this.renderCard();
+    //this.renderCard();
   }
 
-  async render() {
+  render() {
     const config = this._config;
     if (window.loadCardHelpers) {
       this.helpers = await window.loadCardHelpers();
