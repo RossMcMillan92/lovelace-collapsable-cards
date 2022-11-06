@@ -73,7 +73,7 @@ class VerticalStackInCard extends HTMLElement {
 	
   registerListeners(card) {
 	  this.containers.includes(card.type)
-		  ? card.cards.filter((c) => this.registerListeners(c))
+		  ? card.cards.forEach((c) => this.registerListeners(c))
 	          : new Proxy(this._hass.states[card.entity], {
                       set: function (target, key, value) {
 	                if (key !== "state") return true;
