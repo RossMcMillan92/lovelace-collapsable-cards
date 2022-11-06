@@ -81,7 +81,7 @@ class VerticalStackInCard extends HTMLElement {
 	                value !== "off" ? this.toggle(true) : this.toggle(this.isCardActive(this._config));
 	                return true;
                       }
-	           }
+	           });
   }
 	
   isCardActive(card) {
