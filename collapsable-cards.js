@@ -86,7 +86,7 @@ class VerticalStackInCard extends HTMLElement {
 	
   isCardActive(card) {
 	  return this.containers.includes(card.type)
-		  ? card.cards.filter((c) => this.checkActiveCard(c)).length > 0
+		  ? card.cards.filter((c) => this.isCardActive(c)).length > 0
 	          : this._hass.states[card.entity]?.state !== "off";
   }
 
