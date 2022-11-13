@@ -25,6 +25,7 @@ class VerticalStackInCard extends HTMLElement {
 
     this._config = config;
     this._refCards = [];
+    this._titleCard = null;
     this.renderCard();
   }
 
@@ -35,6 +36,10 @@ class VerticalStackInCard extends HTMLElement {
     }
     const promises = config.cards.map((config) => this.createCardElement(config));
     this._refCards = await Promise.all(promises);
+
+    if (config.title_card) {
+      this._titleCard = await this.createCardElement(config.title_card);
+    }
 
     // Create the card
     const card = document.createElement('ha-card');
@@ -78,7 +83,11 @@ class VerticalStackInCard extends HTMLElement {
 
   createToggleButton() {
     const toggleButton = document.createElement('button');
-    toggleButton.innerHTML = this._config.title || 'Toggle'
+    if (this._titleCard) {
+      toggleButton.append(this._titleCard);
+    } else {
+      toggleButton.innerHTML = this._config.title || 'Toggle';
+    }
     toggleButton.className = 'card-content toggle-button-' + this.id
     toggleButton.addEventListener('click', () => {
       this.isToggled = !this.isToggled
@@ -157,6 +166,9 @@ class VerticalStackInCard extends HTMLElement {
       this._refCards.forEach((card) => {
         card.hass = hass;
       });
+    }
+    if (this._titleCard) {
+      this._titleCard.hass = hass;
     }
   }
 
