@@ -14,6 +14,7 @@ Big thanks to [ofekashery, the author of vertical-stack-in-card](https://github.
 | cards      | list    |  | List of cards                         |
 | defaultOpen | string | false | Whether the cards should be visible by default. Can also be set to `desktop-only` to be open by default on desktop and collapsed by default on mobile. Or `contain-toggled` to open only if there are active entities |
 | title      | string  | "Toggle" | Dropdown title                       |
+| title_card | card    |  | Card to display in place of the dropdown title                      |
 | buttonStyle| string  | "" | CSS overrides for the dropdown toggle button |
 
 ## Installation
