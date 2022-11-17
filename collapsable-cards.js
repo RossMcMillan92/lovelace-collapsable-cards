@@ -43,36 +43,28 @@ class CollapsableCards extends HTMLElement {
 		}
 
 		// Create the card
-		const card = document.createElement('ha-card');
-		this.card = card
+		const card = document.createElement('ha-expansion-panel');
+		this.card = card;
+		card.setAttribute('header', this._titleCard || this._config.title || 'Toggle');
+		card.setAttribute('outlined', '');
 		const cardList = document.createElement('div');
-		this.cardList = cardList
-		card.style.overflow = 'hidden';
-		this._refCards.forEach((card) => cardList.appendChild(card));
-		this.cardList.className = 'card-list-' + this.id
-		this.cardList.classList[this.isToggled ? 'add' : 'remove']('is-toggled')
-
-		// create the button
-		const toggleButton = this.createToggleButton()
-
-		card.appendChild(toggleButton);
-		card.appendChild(cardList);
+		cardList.id = "root";
+		this._refCards.forEach((c) => cardList.appendChild(c));
 
 		while (this.hasChildNodes()) {
 			this.removeChild(this.lastChild);
 		}
+		this.injectStyles(card, this.getStyles());
+		card.appendChild(cardList);
+		this.injectStyles(this, 'ha-expansion-panel { --expansion-panel-content-padding: 0px }')
 		this.appendChild(card);
 
 		// Calculate card size
 		this._cardSize.resolve();
 
-		const styleTag = document.createElement('style')
-		styleTag.innerHTML = this.getStyles()
-		card.appendChild(styleTag);
+		this.isToggled = config.defaultOpen === 'contain-toggled' ? this.isCardActive() : this.isToggled;
 
-		if (config.defaultOpen === 'contain-toggled') {
-			this.toggle(this.isCardActive());
-		}
+		if (this.isToggled) card.setAttribute('expanded', '');
 	}
 
 	getEntitiesNames(card) {
@@ -92,38 +84,6 @@ class CollapsableCards extends HTMLElement {
 
 	isCardActive() {
 		return this.getEntitiesNames(this._config).filter((e) => this._hass.states[e].state !== "off").length > 0
-	}
-
-	toggle(open = null) {
-		this.isToggled = open === null ? !this.isToggled : open;
-		this.styleCard(this.isToggled);
-	}
-
-	createToggleButton() {
-		const toggleButton = document.createElement('button');
-		if (this._titleCard) {
-			toggleButton.append(this._titleCard);
-		} else {
-			toggleButton.innerHTML = this._config.title || 'Toggle';
-		}
-		toggleButton.className = 'card-content toggle-button-' + this.id
-		toggleButton.addEventListener('click', () => {
-			this.isToggled = !this.isToggled
-			this.styleCard(this.isToggled)
-		})
-
-		const icon = document.createElement('ha-icon');
-		icon.className = 'toggle-button__icon-' + this.id
-		icon.setAttribute('icon', 'mdi:chevron-down')
-		this.icon = icon
-		toggleButton.appendChild(icon)
-
-		return toggleButton
-	}
-
-	styleCard(isToggled) {
-		this.cardList.classList[isToggled ? 'add' : 'remove']('is-toggled')
-		this.icon.setAttribute('icon', isToggled ? 'mdi:chevron-up' : 'mdi:chevron-down')
 	}
 
 	async createCardElement(cardConfig) {
@@ -224,60 +184,29 @@ class CollapsableCards extends HTMLElement {
 		return sizes.reduce((a, b) => a + b);
 	}
 
+	injectStyles(element, css) {
+		const styleTag = document.createElement('style')
+		styleTag.innerHTML = css
+		element.appendChild(styleTag);
+	}
+
 	getStyles() {
 		return `
-      .toggle-button-${this.id} {
-        color: var(--primary-text-color);
-        text-align: left;
-        background: none;
-        border: none;
-        margin: 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        border-radius: var(--ha-card-border-radius, 4px);
-        ${this._config.buttonStyle || ''}
-      }
-      .toggle-button-${this.id}:focus {
-        outline: none;
-        background-color: var(--divider-color);
-      }
-
-      .card-list-${this.id} {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        clip: rect(0 0 0 0);
-        clip-path: inset(50%);
-        border: 0;
-        white-space: nowrap;
-      }
-
-      .card-list-${this.id}.is-toggled {
-        position: unset;
-        width: unset;
-        height: unset;
-        margin: unset;
-        padding: unset;
-        overflow: unset;
-        clip: unset;
-        clip-path: unset;
-        border: unset;
-        white-space: unset;
-      }
-
-      .toggle-button__icon-${this.id} {
-        color: var(--paper-item-icon-color, #aaa);
-      }
-
-      .type-custom-collapsable-cards {
-        background: transparent;
-      }
-    `;
+		#root {
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+        } 
+		#root > * {
+          margin: var(
+            --vertical-stack-card-margin,
+            var(--stack-card-margin, 4px 0)
+          );
+        }
+        #root > *:last-child {
+          margin-bottom: 0;
+        }
+		`
 	}
 
 }
