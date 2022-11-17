@@ -45,25 +45,22 @@ class CollapsableCards extends HTMLElement {
 		// Create the card
 		const card = document.createElement('ha-expansion-panel');
 		this.card = card;
+		card.style.setProperty('--expansion-panel-content-padding', '0px')
 		card.setAttribute('header', this._titleCard || this._config.title || 'Toggle');
 		card.setAttribute('outlined', '');
 		const cardList = document.createElement('div');
-		cardList.id = 'root';
-		this.cardList = cardList;
-		this._refCards.forEach((card) => cardList.appendChild(card));
+		cardList.id = "root";
+		this._refCards.forEach((c) => cardList.appendChild(c));
 
-		card.appendChild(cardList);
 		while (this.hasChildNodes()) {
 			this.removeChild(this.lastChild);
 		}
+		this.injectStyles(card, this.getStyles());
+		card.appendChild(cardList);
 		this.appendChild(card);
 
 		// Calculate card size
 		this._cardSize.resolve();
-
-		const styleTag = document.createElement('style')
-		styleTag.innerHTML = this.getStyles()
-		card.appendChild(styleTag);
 
 		this.isToggled = config.defaultOpen === 'contain-toggled' ? this.isCardActive() : this.isToggled;
 
@@ -187,12 +184,29 @@ class CollapsableCards extends HTMLElement {
 		return sizes.reduce((a, b) => a + b);
 	}
 
+	injectStyles(element, css) {
+		const styleTag = document.createElement('style')
+		styleTag.innerHTML = css
+		element.appendChild(styleTag);
+	}
+
 	getStyles() {
 		return `
-        #root {
-          margin: 0 -8px;
+		#root {
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+        } 
+		#root > * {
+          margin: var(
+            --vertical-stack-card-margin,
+            var(--stack-card-margin, 4px 0)
+          );
         }
-      `;
+        #root > *:last-child {
+          margin-bottom: 0;
+        }
+		`
 	}
 
 }
