@@ -45,7 +45,6 @@ class CollapsableCards extends HTMLElement {
 		// Create the card
 		const card = document.createElement('ha-expansion-panel');
 		this.card = card;
-		card.style.setProperty('--expansion-panel-content-padding', '0px')
 		card.setAttribute('header', this._titleCard || this._config.title || 'Toggle');
 		card.setAttribute('outlined', '');
 		const cardList = document.createElement('div');
@@ -57,6 +56,7 @@ class CollapsableCards extends HTMLElement {
 		}
 		this.injectStyles(card, this.getStyles());
 		card.appendChild(cardList);
+		this.injectStyles(this, 'ha-expansion-panel { --expansion-panel-content-padding: 0px }')
 		this.appendChild(card);
 
 		// Calculate card size
